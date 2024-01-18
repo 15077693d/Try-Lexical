@@ -1,3 +1,4 @@
+import TreeViewPlugin from '@/plugins/TreeViewPlugin'
 import {
     INSERT_ORDERED_LIST_COMMAND,
     ListItemNode,
@@ -10,6 +11,7 @@ import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary'
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
 import { ListPlugin } from '@lexical/react/LexicalListPlugin'
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin'
+
 import { $createHeadingNode, HeadingNode } from '@lexical/rich-text'
 import { $setBlocksType } from '@lexical/selection'
 import {
@@ -18,24 +20,14 @@ import {
     $getSelection,
     $isRangeSelection,
     EditorState,
+    EditorThemeClasses,
 } from 'lexical'
-import { useEffect } from 'react'
-import styled from 'styled-components'
-import './styles.css'
+import { ComponentProps, useEffect } from 'react'
 
-const theme = {
-    ltr: 'ltr',
-    rtl: 'rtl',
-    paragraph: 'editor-paragraph',
+const theme: EditorThemeClasses = {
+    h1: 'text-black',
+    paragraph: 'text-black',
     quote: 'editor-quote',
-    heading: {
-        h1: 'editor-heading-h1',
-        h2: 'editor-heading-h2',
-        h3: 'editor-heading-h3',
-        h4: 'editor-heading-h4',
-        h5: 'editor-heading-h5',
-        h6: 'editor-heading-h6',
-    },
     list: {
         nested: {
             listitem: 'editor-nested-listitem',
@@ -94,21 +86,6 @@ const theme = {
     },
 }
 
-// Lexical React plugins are React components, which makes them
-// highly composable. Furthermore, you can lazy load plugins if
-// desired, so you don't pay the cost for plugins until you
-// actually use them.
-// function MyCustomAutoFocusPlugin() {
-//     const [editor] = useLexicalComposerContext()
-
-//     useEffect(() => {
-//         // Focus the editor when the effect fires!
-//         editor.focus()
-//     }, [editor])
-
-//     return null
-// }
-
 function MyOnChangePlugin(props: {
     onChange: (editorState: EditorState) => void
 }): null {
@@ -130,24 +107,6 @@ function onError(error: unknown) {
     console.error(error)
 }
 
-const StyledContentEditable = styled(ContentEditable)`
-    padding: 0 8px;
-    width: 100%;
-    z-index: 10;
-    border: unset;
-    outline: unset;
-    position: relative;
-`
-
-const NameWrapper = styled('div')`
-    position: relative;
-    #name-placeholder {
-        color: rgba(0, 0, 0, 0.3);
-        position: absolute;
-        top: 0;
-        padding: 0 9px;
-    }
-`
 function SwitchListPlugin(): JSX.Element {
     const [editor] = useLexicalComposerContext()
     const onClick: React.MouseEventHandler<HTMLButtonElement> = () => {
@@ -184,7 +143,9 @@ function AddHeadingPlugin(): JSX.Element {
     return <button onClick={onClick}>Add Heading</button>
 }
 export function Editor() {
-    const initialConfig = {
+    const initialConfig: ComponentProps<
+        typeof LexicalComposer
+    >['initialConfig'] = {
         namespace: 'MyEditor',
         theme,
         onError,
@@ -193,26 +154,32 @@ export function Editor() {
 
     return (
         <LexicalComposer initialConfig={initialConfig}>
-            <ListPlugin />
-            <NameWrapper>
+            <div className="bg-lexical my-3 p-3 rounded-t-lg">
+                <ListPlugin />
+                <AddHeadingPlugin />
+                <SwitchHeadingPlugin />
+                <MyOnChangePlugin
+                    onChange={(editorState) => {
+                        console.log(editorState)
+                    }}
+                />
+                <SwitchListPlugin />
+                <HistoryPlugin />
+            </div>
+            <div className="relative">
                 <RichTextPlugin
-                    contentEditable={<StyledContentEditable />}
+                    contentEditable={
+                        <ContentEditable className="bg-white p-3 outline-none text-black min-h-[600px] rounded-b-lg bg-slate-100" />
+                    }
                     placeholder={
-                        <div id="name-placeholder">Give me a name</div>
+                        <div className="absolute text-black top-0 p-3">
+                            Give me a name
+                        </div>
                     }
                     ErrorBoundary={LexicalErrorBoundary}
                 />
-            </NameWrapper>
-            <AddHeadingPlugin />
-            <SwitchHeadingPlugin />
-            <MyOnChangePlugin
-                onChange={(editorState) => {
-                    console.log(editorState)
-                }}
-            />
-
-            <SwitchListPlugin />
-            <HistoryPlugin />
+            </div>
+            <TreeViewPlugin />
         </LexicalComposer>
     )
 }
