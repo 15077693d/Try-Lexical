@@ -1,3 +1,5 @@
+import HeadingPlugin from '@/plugins/HeadingPlugin'
+import ParagraphPlugin from '@/plugins/ParagraphPlugin'
 import TreeViewPlugin from '@/plugins/TreeViewPlugin'
 import {
     INSERT_ORDERED_LIST_COMMAND,
@@ -25,7 +27,11 @@ import {
 import { ComponentProps, useEffect } from 'react'
 
 const theme: EditorThemeClasses = {
-    h1: 'text-black',
+    heading: {
+        h1: 'text-5xl',
+        h2: 'text-3xl',
+    },
+
     paragraph: 'text-black',
     quote: 'editor-quote',
     list: {
@@ -155,6 +161,15 @@ export function Editor() {
     return (
         <LexicalComposer initialConfig={initialConfig}>
             <div className="bg-lexical my-3 p-3 rounded-t-lg">
+                <div>
+                    <span className="bg-white p-2 rounded-lg mr-2">
+                        Default Plugin
+                    </span>
+                    <span className="space-x-4">
+                        <ParagraphPlugin />
+                        <HeadingPlugin />
+                    </span>
+                </div>
                 <ListPlugin />
                 <AddHeadingPlugin />
                 <SwitchHeadingPlugin />
@@ -169,11 +184,11 @@ export function Editor() {
             <div className="relative">
                 <RichTextPlugin
                     contentEditable={
-                        <ContentEditable className="bg-white p-3 outline-none text-black min-h-[600px] rounded-b-lg bg-slate-100" />
+                        <ContentEditable className="bg-white p-3 z-10 outline-none text-black min-h-[600px] rounded-b-lg bg-slate-100" />
                     }
                     placeholder={
-                        <div className="absolute text-black top-0 p-3">
-                            Give me a name
+                        <div className="absolute text-black top-0 p-3 left-1  select-none pointer-events-none">
+                            Enter some rich text
                         </div>
                     }
                     ErrorBoundary={LexicalErrorBoundary}
