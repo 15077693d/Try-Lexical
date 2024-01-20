@@ -1,3 +1,4 @@
+import ButtonContainer from '@/components/Container/ButtonContainer'
 import { Button } from '@/components/ui/button'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { $setBlocksType } from '@lexical/selection'
@@ -13,5 +14,9 @@ export default function ParagraphPlugin() {
             }
         })
     }
-    return <Button onClick={onClick}>P</Button>
+    return (
+        <ButtonContainer title={'Paragraph'}>
+            <Button onClick={onClick}>P</Button>
+        </ButtonContainer>
+    )
 }
