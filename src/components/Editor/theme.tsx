@@ -66,12 +66,12 @@ const theme: EditorThemeClasses = {
     // layoutItem: 'PlaygroundEditorTheme__layoutItem',
     // link: 'PlaygroundEditorTheme__link',
     list: {
-        // listitem: 'PlaygroundEditorTheme__listItem',
+        listitem: 'PlaygroundEditorTheme__listItem',
         listitemChecked: 'PlaygroundEditorTheme__listItemChecked',
         listitemUnchecked: 'PlaygroundEditorTheme__listItemUnchecked',
-        // nested: {
-        //     listitem: 'PlaygroundEditorTheme__nestedListItem',
-        // },
+        nested: {
+            listitem: 'PlaygroundEditorTheme__nestedListItem',
+        },
         // olDepth: [
         //     'PlaygroundEditorTheme__ol1',
         //     'PlaygroundEditorTheme__ol2',
@@ -79,7 +79,7 @@ const theme: EditorThemeClasses = {
         //     'PlaygroundEditorTheme__ol4',
         //     'PlaygroundEditorTheme__ol5',
         // ],
-        // ul: 'PlaygroundEditorTheme__ul',
+        ul: 'PlaygroundEditorTheme__ul',
     },
     // ltr: 'PlaygroundEditorTheme__ltr',
     // mark: 'PlaygroundEditorTheme__mark',

@@ -82,7 +82,6 @@ export function Editor() {
                     />
                 </div>
             </div>
-
             <TreeViewPlugin />
         </LexicalComposer>
     )
